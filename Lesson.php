@@ -4,47 +4,28 @@
 
 abstract class Lesson
 {
-    protected $duration;
-    const     FIXED = 1;
-    const     TIME = 2;
-    private   $costtype;
+    private $duration;
+    private $costtype;
 
-    function __construct($duration,$costtype = 1)
+    function __construct($duration, CostStrategy $strategy)
     {
         $this->duration  =  $duration;
-        $this->costtype = $costtype;
+        $this->costStrategy = $strategy;
 
     }
 
     function cost()
     {
-        switch ($this->costtype) {
-            CASE self::TIME :
-                return (5 * $this->duration);
-                break;
-            CASE self::FIXED :
-                return 30;
-                break;
-            default:
-                $this->costtype = self::FIXED;
-                return 30;
-        }
+       return $this->costStrategy->cost($this);
     }
 
     function chargeType()
     {
-        switch ($this->costtype) {
-            CASE self::TIME :
-                return "Почасовая оплата";
-                break;
-            CASE self::FIXED :
-                return "Фиксированная оплата";
-                break;
-            default:
-                $this->costtype = self::FIXED;
-                return "Фиксированная оплата";
-
-        }
+        return $this->costStrategy->chargeType();
+    }
+    function getDuration()
+    {
+        return $this->duration;
     }
 
 }
