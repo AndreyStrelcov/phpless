@@ -6,7 +6,7 @@ abstract class Lesson
 {
     protected $duration;
     const     FIXED = 1;
-const     TIME = 2;
+    const     TIME = 2;
     private   $costtype;
 
     function __construct($duration,$costtype = 1)
