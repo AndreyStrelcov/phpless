@@ -1,12 +1,19 @@
 <?php
 
-include_once "Employee.php";
+//error_reporting(-1);
 
-$boss = new NastyBoss();
-$boss->addEmployee("Игорь");
-$boss->addEmployee("Владимир");
-$boss->addEmployee("Мария");
-$boss->projectFails();
+
+include_once "classes/WordFactory.php";
+
+
+$a = new WordFactory();
+
+$a->hello();
+
+
+
+
+
 
 
 

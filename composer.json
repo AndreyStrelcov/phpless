@@ -1,0 +1,15 @@
+{
+    "name": "andrew/phpless",
+    "authors": [
+        {
+            "name": "Andrew Strelcov",
+            "email": "astrelcov@yahoo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "phpless\\": "classes/"
+        }
+    }
+}
