@@ -8,3 +8,5 @@ class WordFactory
 		return 'Прівіт!';
 	}
 }
+
+//echo 'var WordFactory.php';

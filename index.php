@@ -1,33 +1,29 @@
 <?php
 
-//error_reporting(-1);
+/*$path = __DIR__ . '/classes/WordFactory.php';
 
-/*
-include_once '/var/www/phpless/data.php';
-echo $a;
-echo $y;*/
+echo '<pre>';
+echo $path;
+echo '</pre>';
 
-/*$path = __DIR__ . '/data.php';
-echo $path;*/
+require_once $path;*/
 
+use classes\WordFactory;
 
-//declare(strict_types=1);
-
-class A
+function autoload($class)
 {
-    public $x;
+    $class = str_replace("\\",'/', $class);
+    $file = __DIR__ . "/{$class}.php";
+    require_once $file;
 }
 
-$a = new A;
+spl_autoload_register('autoload');
 
-function dump(int $x): string
-{
-    return $x;
-}
+$obj = new WordFactory();
 
-var_dump(dump(5));
+$wd = $obj->hello();
+echo $wd;
 
 
 
 
-  
