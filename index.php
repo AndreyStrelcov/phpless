@@ -1,5 +1,7 @@
 <?php
 
+
+use classes\Preferences;
 use classes\WordFactory;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -13,10 +15,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 spl_autoload_register('autoload');*/
 
-$obj = new WordFactory();
+/*$obj = new WordFactory();
 
 $wd = $obj->hello();
-echo $wd;
+echo $wd;*/
+
+$pref = Preferences::getInstance();
+$pref->setProperty("name", "Ivan");
+
+unset($pref);
+
+$pref2 = Preferences::getInstance();
+print $pref2->getProperty("name") . "\n";
 
 
 
