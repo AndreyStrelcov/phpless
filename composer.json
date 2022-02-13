@@ -1,8 +1,14 @@
 {
-  "require": {},
+  "require": {
+    "php-di/php-di": "^6.3",
+    "relay/relay": "2.x@dev",
+    "zendframework/zend-diactoros": "^1.3",
+    "middlewares/fast-route": "^2.0",
+    "middlewares/request-handler": "^2.0"
+  },
   "autoload": {
     "psr-4": {
-      "classes\\": "classes"
+      "ExempleApp\\": "src/"
     }
   }
 }
