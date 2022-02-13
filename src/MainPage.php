@@ -10,12 +10,8 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @package   ExampleApp
  */
-class HelloWorld
+class MainPage
 {
-    /**
-     * @var string
-     */
-    private $foo;
     /**
      * @var ResponseInterface
      */
@@ -24,14 +20,9 @@ class HelloWorld
     /**
      * HelloWorld constructor.
      *
-     * @param string $foo
      * @param ResponseInterface $response
      */
-    public function __construct(
-        string $foo,
-        ResponseInterface $response
-    ) {
-        $this->foo = $foo;
+    public function __construct(ResponseInterface $response) {
         $this->response = $response;
     }
 
@@ -45,8 +36,9 @@ class HelloWorld
     {
         $response = $this->response->withHeader('Content-Type', 'text/html');
         $response->getBody()
-            ->write("<html><head></head><body>Hello, {$this->foo} world!</body></html>");
+            ->write('<html><head></head><body>Go to the <a href="/hello">Hello, World!</a> example.</body></html>');
 
         return $response;
     }
 }
+

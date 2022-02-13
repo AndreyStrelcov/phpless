@@ -1,37 +1,51 @@
 <?php
-
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
-use ExempleApp\HelloWorld;
+use ExampleApp\HelloWorld;
+use ExampleApp\MainPage;
 use FastRoute\RouteCollector;
 use Middlewares\FastRoute;
+use Middlewares\RequestHandler;
+use Narrowspark\HttpEmitter\SapiEmitter;
 use Relay\Relay;
+use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use function DI\create;
+use function DI\get;
 use function FastRoute\simpleDispatcher;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$containerBuilder = new \DI\ContainerBuilder();
+$containerBuilder = new ContainerBuilder();
 $containerBuilder->useAutowiring(false);
 $containerBuilder->useAnnotations(false);
 $containerBuilder->addDefinitions([
-    \ExempleApp\HelloWorld::class => \DI\create(\ExempleApp\HelloWorld::class)
+    MainPage::class => create(MainPage::class)
+        ->constructor(get('Response')),
+    HelloWorld::class => create(HelloWorld::class)
+        ->constructor(get('Foo'), get('Response')),
+    'Foo' => 'bar',
+    'Response' => function() {
+        return new Response();
+    },
 ]);
+
+/** @noinspection PhpUnhandledExceptionInspection */
 $container = $containerBuilder->build();
 
-$routes = simpleDispatcher(function (RouteCollector $r)
-{
-   $r->get('/hello', HelloWorld::class);
+$routes = simpleDispatcher(function (RouteCollector $r) {
+    $r->get('/', MainPage::class);
+    $r->get('/hello', HelloWorld::class);
 });
 
+$middlewareQueue[] = new FastRoute($routes);
+$middlewareQueue[] = new RequestHandler($container);
 
-$middlewareQueue[] = new FastRoute($route);
-$middlewareQueue[] = new RequestHandler();
-
+/** @noinspection PhpUnhandledExceptionInspection */
 $requestHandler = new Relay($middlewareQueue);
-$requestHandler->handle(ServerRequestFactory::fromGlobals());
+$response = $requestHandler->handle(ServerRequestFactory::fromGlobals());
 
-$helloWorld = $container->get(\ExempleApp\HelloWorld::class);
-$helloWorld->announce();
+$emitter = new SapiEmitter();
+/** @noinspection PhpVoidFunctionResultUsedInspection */
+return $emitter->emit($response);
